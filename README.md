@@ -1,19 +1,13 @@
 # Hotkey Tools
-Bunch of usefull keyboard shortcuts and scripts programmed with [AutoHotkey v2](https://www.autohotkey.com/).
-
+Bunch of usefull keyboard shortcuts and scripts programmed with [AutoHotkey](https://www.autohotkey.com/) Version 2.
 
 
 ## Install
 1. Download [AutoHotkey v2](https://www.autohotkey.com/v2/)
-
-2. Clone this repository to your local computer
-
-3. Copy **`PRESETS_SAMPLE.ini`** and rename the new file to **`PRESETS.ini`**
-
+2. Clone this repository to your local computer: `git clone https://github.com/tricolon/hotkey-tools.git`
+3. Copy `PRESETS_SAMPLE.ini` and rename the new file to `PRESETS.ini` (so that your customizations becomes ignored via `.gitignore`)
 4. Customize the settings and switch on/off some modules in the new `PRESETS.ini` file
-
 5. **Execute** the AHK files you wanna use.
-
 
 
 ## Usage
