@@ -46,11 +46,16 @@ if (defaultLanguage != "auto")
 	; }
 }
 
-; compose function
+; hotstring compose function
 cp(char) {
-	global modified := 1 ; set modified state to 1
-	Hotstring "Reset"    ; reset
-	SendInput char       ; send replacement
+	global modified := 1  ; set modified state to 1
+	Hotstring "Reset"     ; reset
+	SendInput char        ; send replacement
+}
+; hotkey compose function
+hotkeyCp(char) {
+	global modified := -1 ; set modified state to -1
+	SendInput char        ; send characters
 }
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -71,6 +76,20 @@ cp(char) {
 ::rdm::cp(Random(0, 9)) ; random number
 ::y/n::cp(Random(0, 1)? "yes" : "no") ; decision maker ("yes or no") [English]
 ::j/n::cp(Random(0, 1)? "ja" : "nein") ; Entscheidungstreffer ("ja oder nein") [German]
+
+; media control
+Numpad5::     hotkeyCp("{Media_Play_Pause}")
+NumpadClear:: hotkeyCp("{Media_Play_Pause}")
+Numpad4::     hotkeyCp("{Media_Prev}")
+NumpadLeft::  hotkeyCp("{Media_Prev}")
+Numpad6::     hotkeyCp("{Media_Next}")
+NumpadRight:: hotkeyCp("{Media_Next}")
+Numpad8::     hotkeyCp("{Volume_Up}")
+NumpadUp::    hotkeyCp("{Volume_Up}")
+Numpad2::     hotkeyCp("{Volume_Down}")
+NumpadDown::  hotkeyCp("{Volume_Down}")
+Numpad0::     hotkeyCp("{Volume_Mute}")
+NumpadIns::   hotkeyCp("{Volume_Mute}")
 
 ; tooltip special numbers
 :*:#pi::tt("3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679")
@@ -186,6 +205,15 @@ cp(char) {
 ::tc::cp("ʨ")
 ::lz::cp("ʫ")
 ::ww::cp("ʬ")
+
+; invisible characters
+:: ~::cp("{U+2009}")  ; thin space
+:: !::cp("{U+00A0}")  ; no-break space
+:: !~::cp("{U+202F}") ; narrow no-break space
+:: ~!::cp("{U+202F}") ; narrow no-break space
+::(-)::cp("{U+00AD}") ; soft hyphen
+::(+)::cp("{U+2064}") ; invisible plus
+::(*)::cp("{U+2062}") ; invisible times
 
 ; diacritics
 ::[']::cp("{U+00B4}") ; acute
@@ -1052,6 +1080,9 @@ cp(char) {
 ::^SM::cp("℠")
 ::SM::cp("℠")
 ::sm::cp("℠")
+::%o::cp("‰")
+::0/00::cp("‰")
+::0/0::cp("%")
 ::\/::cp("✓")
 ::/\::cp("✗")
 ::8<::cp("✂")
@@ -1206,8 +1237,6 @@ cp(char) {
 ::|Q::cp("ℚ")
 ::|R::cp("ℝ")
 ::|C::cp("ℂ")
-::(+)::cp("⁤") ; invisible plus
-::(*)::cp("⁢") ; invisible times
 
 ; currency
 ::ox::cp("¤")
@@ -1257,7 +1286,6 @@ cp(char) {
 ::os::cp("§")
 ::<(::cp("⟨")
 ::)>::cp("⟩")
-::%o::cp("‰")
 ::^,::cp("’")
 ::''::cp("’")
 ::^.::cp("·")
@@ -1277,13 +1305,13 @@ cp(char) {
 ::3m::cp("⸻")
 ::----::cp("⸺")
 ::2m::cp("⸺")
-::---::cp("—")
-::1m::cp("—")
-::-m::cp("—")
-::m-::cp("—")
-::--::cp("–")
-::-n::cp("–")
-::n-::cp("–")
+::---::cp("—") ; em dash
+::1m::cp("—")  ; em dash
+::-m::cp("—")  ; em dash
+::m-::cp("—")  ; em dash
+::--::cp("–")  ; en dash
+::-n::cp("–")  ; en dash
+::n-::cp("–")  ; en dash
 
 ; quotes (partly conditional hotstrings related to the input language)
 ::<"::cp(DE ? "„" : "“")
@@ -1327,14 +1355,8 @@ cp(char) {
 ::!::cp("¡{!}{left}") ; (!) single letter code
 ::2::cp(DE ? "„“{left}" : "“”{left}") ; [2/"]-key ; (!) single letter code
 ::#::cp(DE ? "‚‘{left}" : "‘’{left}") ; [#/']-key ; (!) single letter code
-!2::{ ; with alt → guillemets ; (!) single letter code
-	global modified := -1 ; set modified state to -1
-	SendInput "»«{left}"
-}
-!#::{ ; with alt → guillemets ; (!) single letter code
-	global modified := -1 ; set modified state to -1
-	SendInput "›‹{left}"
-}
+!2::hotkeyCp("»«{left}") ; with alt → guillemets
+!#::hotkeyCp("›‹{left}") ; with alt → guillemets
 
 ; super short shortcuts
 ::i::cp(IniRead("PRESETS.ini", "general", "username")) ; (!) single letter code

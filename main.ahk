@@ -29,11 +29,12 @@ TraySetIcon "img/main.png",,1
     :*?:[ ::[]{left 1}
     :*?:{ ::{{}{}}{left 1}
     <^>!+<::Send "⟨⟩{left 1}"
-
+    
     ; typographic replacement
     <^>!Space::Send "{U+2009}"   ; thin space: " "            ; altgr + space
     >^<^>!Space::Send "{U+202F}" ; narrow no-break space: " " ; altgr + ctrl (right) + space
     >^Space::Send "{U+00A0}"     ; no-break space: " "        ; ctrl (right) + space
+    ^!-::Send "{U+00AD}"         ; soft hyphen: "­"            ; ctrl (right) + alt + -
     :?:?!::‽
     :?:!?::‽
     ::<3::❦
@@ -291,8 +292,8 @@ TraySetIcon "img/main.png",,1
     :?:<~::↜
 #HotIf
 
-; greek hotkeys and hotstrings
-#HotIf IniRead("PRESETS.ini", "module_main", "greek") = "on"
+; greek letter hotkeys
+#HotIf IniRead("PRESETS.ini", "module_main", "greek_hotkeys") = "on"
     <^>!+d::Send "Δ"
     <^>!+t::Send "Θ"
     <^>!+l::Send "Λ"
@@ -313,7 +314,10 @@ TraySetIcon "img/main.png",,1
     <^>!r::Send "ρ"
     <^>!s::Send "σ"
     <^>!o::Send "ω"
+#HotIf
 
+; greek letter hotstrings
+#HotIf IniRead("PRESETS.ini", "module_main", "greek_hotstrings") = "on"
     :*?c:#Gam::Γ
     :*?c:#Del::Δ
     :*?c:#The::Θ
@@ -453,10 +457,12 @@ TraySetIcon "img/main.png",,1
 ; Second clipboard with right ctrl key
 #HotIf IniRead("PRESETS.ini", "module_main", "2nd_clipboard") = "on"
     extra_clipboard := ""
-    >^c::{
+    >^c::
+    >^x::
+    {
         prevClip := A_Clipboard ; get clipboard
             A_Clipboard := "" ; empty the clipboard
-            Send "^c"
+            Send InStr(A_ThisHotkey, "c") ? "^c" : "^x"
             if !ClipWait(2)
             {
                 A_Clipboard := prevClip ; reset clipboard
@@ -465,7 +471,8 @@ TraySetIcon "img/main.png",,1
             global extra_clipboard := A_Clipboard ; get selection
         A_Clipboard := prevClip ; reset clipboard
     }
-    >^v::{
+    >^v::
+    {
         prevClip := A_Clipboard ; get clipboard
             A_Clipboard := extra_clipboard ; set clipboard
             Send "^v"

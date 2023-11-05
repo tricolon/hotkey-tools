@@ -28,6 +28,7 @@ TraySetIcon "img/regexp.png",,1
 ;     #30r2         5,4772255751
 ;     #sin(3)       0,1411200081
 ;     #sin(pi)      0
+;     #cos(2pi)     1
 ;     #atan(,5)     0,463647609
 
 if (IniRead("PRESETS.ini", "module_regexp", "calculator") = "on") {
@@ -49,19 +50,17 @@ if (IniRead("PRESETS.ini", "module_regexp", "calculator") = "on") {
         ; root operator
         str := RegExReplace(str, "r(\d+)", "**(1/$1)")
 
-        ; replacement pairs
+        ; replacement
         replace := [
             [",", "."],  ; for !English version remove this
             [";", ","],  ; for !English version remove this
             ["^", "**"],
-            ["pi", "3.14159265358979323846264"],
-            ["eu", "2.71828182845904523536029"]
+            ["regex/(\d)pi", "$1*3.14159265358979323846264"], ; add multiplication sign
+            ["regex/(\d)eu", "$1*2.71828182845904523536029"], ; add multiplication sign
+            ["regex/pi", "3.14159265358979323846264"],
+            ["regex/eu", "2.71828182845904523536029"]
         ]
-        
-        ; replacement
-        for i, pair in replace {
-            str := StrReplace(str, pair[1], pair[2])
-        }
+        str := replaceChars(str, replace)
         
         script :=
         ( ; error handling: send ☹ (U+2639) on error
