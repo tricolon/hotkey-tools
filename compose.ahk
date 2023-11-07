@@ -57,7 +57,6 @@ cp(char) {
 hotkeyCp(char) {
 	global modified := -1 ; set modified state to -1
 	SendInput char        ; send characters
-	Send compose
 }
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -92,6 +91,22 @@ Numpad2::     hotkeyCp("{Volume_Down}")
 NumpadDown::  hotkeyCp("{Volume_Down}")
 Numpad0::     hotkeyCp("{Volume_Mute}")
 NumpadIns::   hotkeyCp("{Volume_Mute}")
+Numpad1::
+NumpadEnd::
+{ ; rewind
+	active_win := WinGetID("A")
+	WinActivate "ahk_exe firefox.exe" ; or other browser where the media is played
+	hotkeyCp("{Left}")
+	WinActivate("ahk_id " active_win)
+}
+Numpad3::
+NumpadPgDn::
+{ ; skip
+	active_win := WinGetID("A")
+	WinActivate "ahk_exe firefox.exe" ; or other browser where the media is played
+	hotkeyCp("{Right}")
+	WinActivate("ahk_id " active_win)
+}
 
 ; tooltip special numbers
 :*:#pi::tt("3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679")
