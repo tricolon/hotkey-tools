@@ -78,12 +78,13 @@ TraySetIcon "img/apps.png",,1
         prevClip := A_Clipboard ; get clipboard
             A_Clipboard := "" ; empty the clipboard
             Send "^c"
-            if !ClipWait(2)
+            if !ClipWait(.2) || !A_Clipboard
             {
-                A_Clipboard := prevClip ; reset clipboard
-                return ; attempt to copy text onto clipboard failed
+                A_Clipboard := prevClip ; reset clipboard (attempt to copy text onto clipboard failed)
+                if !prevClip ; try to process previous clipboard content
+                    return ; if previous clipboard was empty, return
             }
-
+            
             ; get & encode selection
             txt := str2url(A_Clipboard)
             
@@ -123,12 +124,13 @@ TraySetIcon "img/apps.png",,1
 
         A_Clipboard := "" ; empty the clipboard
         Send "^c"
-        if !ClipWait(2)
+        if !ClipWait(.2) || !A_Clipboard
         {
-            A_Clipboard := prevClip ; reset clipboard
-            return ; attempt to copy text onto clipboard failed
+            A_Clipboard := prevClip ; reset clipboard (attempt to copy text onto clipboard failed)
+            if !prevClip ; try to process previous clipboard content
+                return ; if previous clipboard was empty, return
         }
-
+        
         ; get & encode selection
         txt := str2url(A_Clipboard)
         
@@ -149,9 +151,9 @@ TraySetIcon "img/apps.png",,1
         ; display output
         if (StrLen(syn) < 400) {
             syn := StrReplace(syn, ", ", "`n") ; seperate synonyms by newline if there are not to many (length of string < 400)
-            tt(syn, 10, false) ; show short response for up to 10 s
+            ;tt(syn, 20, false) ; show short response for up to 20 s
         } else {
-            tt(syn, 20, false) ; show long response for up to 20 s
+            ;tt(syn, 30, false) ; show long response for up to 30 s
         }
 
         A_Clipboard := prevClip ; reset clipboard
@@ -168,10 +170,11 @@ TraySetIcon "img/apps.png",,1
 
         A_Clipboard := "" ; empty the clipboard
         Send "^c"
-        if !ClipWait(2)
+        if !ClipWait(.2) || !A_Clipboard
         {
-            A_Clipboard := prevClip ; reset clipboard
-            return ; attempt to copy text onto clipboard failed
+            A_Clipboard := prevClip ; reset clipboard (attempt to copy text onto clipboard failed)
+            if !prevClip ; try to process previous clipboard content
+                return ; if previous clipboard was empty, return
         }
 
         ; get & encode selection
