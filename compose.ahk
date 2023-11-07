@@ -27,13 +27,14 @@ if (defaultLanguage != "auto")
 	
     KeyWait "CapsLock"	; wait till CapsLock key is released
 	; When ("CapsLock" is released) {
+
+		compose := 0
 		
 		if (modified = -1) { ; not triggered by hotstring but hotkeys
 			return
 		} else {
 			SendLevel 1
 			SendEvent "​" ; zero width space
-			compose := 0
 		}
 		
 		; if hotstring is now triggered, modified will chage to 1
@@ -56,6 +57,7 @@ cp(char) {
 hotkeyCp(char) {
 	global modified := -1 ; set modified state to -1
 	SendInput char        ; send characters
+	Send compose
 }
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
