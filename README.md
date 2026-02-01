@@ -1,5 +1,5 @@
 # Hotkey Tools
-Bunch of usefull keyboard shortcuts and scripts programmed with [AutoHotkey](https://www.autohotkey.com/) Version 2.
+Lots of useful keyboard shortcuts and scripts programmed with [AutoHotkey](https://www.autohotkey.com/) Version 2.
 
 
 ## Install
